@@ -5,6 +5,8 @@ import { useToast } from '../components/Toast';
 import AgentCard from '../components/AgentCard';
 import FadeContent from '../components/reactbits/FadeContent';
 import BlurText from '../components/reactbits/BlurText';
+import GradientText from '../components/reactbits/GradientText';
+import SplitText from '../components/reactbits/SplitText';
 
 export default function Home() {
     const [agents, setAgents] = useState([]);
@@ -28,9 +30,9 @@ export default function Home() {
                             animateBy="words"
                             className=""
                         />
-                        <span className="gradient">One command to install.</span>
+                        <GradientText>One command to install.</GradientText>
                     </h1>
-                    <p>Powerful AI agents running on our servers. You provide your API key. No code downloaded. No secrets shared. Just results.</p>
+                    <p><SplitText text="Powerful AI agents running on our servers. You provide your API key. No code downloaded. No secrets shared. Just results." by="words" delay={30} /></p>
                     <div className="hero-actions">
                         <Link to="/agents" className="btn btn-primary">Browse Agents →</Link>
                         <Link to="/docs" className="btn btn-secondary">Read Docs</Link>

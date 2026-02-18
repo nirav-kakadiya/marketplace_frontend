@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { fetchAgent, API_BASE } from '../api';
+import { fetchAgent, fetchInstall, API_BASE } from '../api';
 import { useToast } from '../components/Toast';
 import CopyBlock from '../components/CopyBlock';
 import { agentIcon } from '../components/AgentCard';
@@ -8,13 +8,15 @@ import { agentIcon } from '../components/AgentCard';
 export default function AgentDetail() {
     const { id } = useParams();
     const [agent, setAgent] = useState(null);
+    const [install, setInstall] = useState(null);
     const [loading, setLoading] = useState(true);
     const copy = useToast();
 
     useEffect(() => {
         setLoading(true);
-        fetchAgent(id).then(a => {
+        Promise.all([fetchAgent(id), fetchInstall(id)]).then(([a, inst]) => {
             setAgent(a);
+            setInstall(inst);
             setLoading(false);
         });
     }, [id]);
@@ -112,6 +114,24 @@ export default function AgentDetail() {
                                 <tr><td><code>error</code></td><td>Error message if something went wrong</td></tr>
                             </tbody>
                         </table>
+
+                        {install?.files?.['SKILL.md'] && (
+                            <>
+                                <h2>Setup Guide</h2>
+                                <p>This agent includes a <code>SKILL.md</code> file that OpenClaw uses to understand when and how to invoke it:</p>
+                                <pre><code>{install.files['SKILL.md']}</code></pre>
+                            </>
+                        )}
+
+                        {install?.install_commands && install.install_commands.length > 0 && (
+                            <>
+                                <h2>Install Commands</h2>
+                                <p>These commands are run automatically during installation:</p>
+                                <CopyBlock code={install.install_commands.join('\n')}>
+                                    {install.install_commands.join('\n')}
+                                </CopyBlock>
+                            </>
+                        )}
                     </div>
 
                     <div className="agent-sidebar">
