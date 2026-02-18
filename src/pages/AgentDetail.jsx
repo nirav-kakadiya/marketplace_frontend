@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { fetchAgent, fetchInstall, API_BASE } from '../api';
+import { fetchAgent, API_BASE } from '../api';
 import { useToast } from '../components/Toast';
 import CopyBlock from '../components/CopyBlock';
 import { agentIcon } from '../components/AgentCard';
-import FadeContent from '../components/reactbits/FadeContent';
 
 export default function AgentDetail() {
     const { id } = useParams();

@@ -28,7 +28,16 @@ export default function App() {
                         <Route path="/agents/:id" element={<AgentDetail />} />
                         <Route path="/docs" element={<Docs />} />
                         <Route path="/docs/:section" element={<Docs />} />
-                        <Route path="*" element={<Home />} />
+                        <Route path="*" element={
+                            <div className="empty" style={{ paddingTop: '8rem' }}>
+                                <div className="empty-icon">404</div>
+                                <h3>Page Not Found</h3>
+                                <p>The page you're looking for doesn't exist.</p>
+                                <div style={{ marginTop: '1rem' }}>
+                                    <a href="/" className="btn btn-secondary">← Back to Home</a>
+                                </div>
+                            </div>
+                        } />
                     </Routes>
                 </div>
                 <Footer />
