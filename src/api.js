@@ -1,21 +1,34 @@
 const API_BASE = window.__MARKETPLACE_API__ || 'https://api.nextbase.solutions';
 
+export { API_BASE };
+
 export async function fetchAgents() {
-  const res = await fetch(`${API_BASE}/marketplace/agents`);
-  if (!res.ok) throw new Error('Failed to fetch agents');
-  return res.json();
+    try {
+        const res = await fetch(`${API_BASE}/marketplace/agents`);
+        const data = await res.json();
+        return data.agents || [];
+    } catch (e) {
+        console.error('Failed to fetch agents:', e);
+        return [];
+    }
 }
 
 export async function fetchAgent(id) {
-  const res = await fetch(`${API_BASE}/marketplace/agents/${id}`);
-  if (!res.ok) throw new Error('Agent not found');
-  return res.json();
+    try {
+        const res = await fetch(`${API_BASE}/marketplace/agents/${id}`);
+        if (!res.ok) return null;
+        return await res.json();
+    } catch (e) {
+        return null;
+    }
 }
 
 export async function fetchInstall(id) {
-  const res = await fetch(`${API_BASE}/marketplace/agents/${id}/install`);
-  if (!res.ok) throw new Error('Install info not found');
-  return res.json();
+    try {
+        const res = await fetch(`${API_BASE}/marketplace/agents/${id}/install`);
+        if (!res.ok) return null;
+        return await res.json();
+    } catch (e) {
+        return null;
+    }
 }
-
-export { API_BASE };

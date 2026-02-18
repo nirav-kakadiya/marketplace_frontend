@@ -1,161 +1,157 @@
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import BlurText from '../components/reactbits/BlurText';
-import SplitText from '../components/reactbits/SplitText';
-import FadeContent from '../components/reactbits/FadeContent';
-import SpotlightCard from '../components/reactbits/SpotlightCard';
+import { Link } from 'react-router-dom';
 import { fetchAgents, API_BASE } from '../api';
+import { useToast } from '../components/Toast';
 import AgentCard from '../components/AgentCard';
+import FadeContent from '../components/reactbits/FadeContent';
+import BlurText from '../components/reactbits/BlurText';
 
 export default function Home() {
-  const navigate = useNavigate();
-  const [agents, setAgents] = useState([]);
+    const [agents, setAgents] = useState([]);
+    const copy = useToast();
 
-  useEffect(() => {
-    fetchAgents().then(d => setAgents(d.agents?.slice(0, 6) || [])).catch(() => {});
-  }, []);
+    useEffect(() => {
+        fetchAgents().then(setAgents);
+    }, []);
 
-  return (
-    <main>
-      {/* Hero */}
-      <section style={{
-        minHeight: '85vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
-        textAlign: 'center', padding: '6rem 1.5rem 4rem', position: 'relative', overflow: 'hidden'
-      }}>
-        <div style={{
-          position: 'absolute', top: -100, left: '50%', transform: 'translateX(-50%)',
-          width: 900, height: 600,
-          background: 'radial-gradient(ellipse, var(--accent-muted) 0%, transparent 70%)',
-          pointerEvents: 'none'
-        }} />
-        <div style={{ maxWidth: 720, position: 'relative', zIndex: 1 }}>
-          <div style={{ marginBottom: '1.5rem' }}>
-            <BlurText
-              text="Install AI Agents in One Command"
-              delay={100}
-              animateBy="words"
-              className="hero-title"
-              style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 800, lineHeight: 1.1 }}
-            />
-          </div>
-          <FadeContent blur duration={800} delay={500}>
-            <p style={{ fontSize: '1.15rem', color: 'var(--text-secondary)', marginBottom: '2.5rem', maxWidth: 540, margin: '0 auto 2.5rem' }}>
-              Open-source marketplace for AI agents. Use your own API keys. No vendor lock-in. 
-              Install with <code>nxagent install</code>.
-            </p>
-          </FadeContent>
-          <FadeContent blur duration={600} delay={800}>
-            <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-              <button onClick={() => navigate('/agents')}
-                style={{
-                  background: 'var(--accent)', color: 'white', border: 'none',
-                  padding: '0.75rem 1.75rem', borderRadius: 8, fontWeight: 600,
-                  fontSize: '0.95rem', cursor: 'pointer', transition: 'all 0.2s',
-                  boxShadow: '0 2px 12px rgba(230,126,34,0.2)'
-                }}>
-                Browse Agents →
-              </button>
-              <button onClick={() => navigate('/docs')}
-                style={{
-                  background: 'var(--bg-card)', color: 'var(--text)', border: '1px solid var(--border)',
-                  padding: '0.75rem 1.75rem', borderRadius: 8, fontWeight: 600,
-                  fontSize: '0.95rem', cursor: 'pointer', transition: 'all 0.2s'
-                }}>
-                Read Docs
-              </button>
-            </div>
-          </FadeContent>
+    const featured = agents.slice(0, 3);
 
-          <FadeContent blur duration={600} delay={1100}>
-            <div onClick={() => {navigator.clipboard.writeText(`curl -sL ${API_BASE}/cli/install | bash`)}}
-              style={{
-                marginTop: '2rem', background: 'var(--bg-code)', border: '1px solid var(--border)',
-                borderRadius: 8, padding: '0.75rem 1rem', fontFamily: 'var(--mono)',
-                fontSize: '0.85rem', color: 'var(--green)', cursor: 'pointer',
-                maxWidth: 560, margin: '2rem auto 0', transition: 'border-color 0.2s'
-              }}>
-              $ curl -sL {API_BASE}/cli/install | bash
-            </div>
-          </FadeContent>
+    return (
+        <div className="page-enter">
+            <section className="hero">
+                <div className="container">
+                    <p className="section-label">Open Source Agent Marketplace</p>
+                    <h1>
+                        <BlurText
+                            text="AI Agents for OpenClaw."
+                            delay={80}
+                            animateBy="words"
+                            className=""
+                        />
+                        <span className="gradient">One command to install.</span>
+                    </h1>
+                    <p>Powerful AI agents running on our servers. You provide your API key. No code downloaded. No secrets shared. Just results.</p>
+                    <div className="hero-actions">
+                        <Link to="/agents" className="btn btn-primary">Browse Agents →</Link>
+                        <Link to="/docs" className="btn btn-secondary">Read Docs</Link>
+                    </div>
+                    <div className="hero-install">
+                        <div className="install-cmd" style={{ maxWidth: '560px', margin: '0 auto' }} onClick={() => copy(`curl -sL ${API_BASE}/cli/install | bash`)}>
+                            <span>$ curl -sL {API_BASE}/cli/install | bash</span>
+                            <span className="hint" style={{ color: 'var(--text-dim)', fontSize: '0.75rem' }}>Click to copy</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <FadeContent>
+                <section className="section">
+                    <div className="container">
+                        <p className="section-label">How It Works</p>
+                        <h2 className="section-title">Three steps. That's it.</h2>
+                        <p className="section-desc">No complicated setup. No Docker. No configuration files.</p>
+                        <div className="steps-row">
+                            <div className="step">
+                                <div className="step-num">1</div>
+                                <h3>Install the CLI</h3>
+                                <p>One command installs <code>nxagent</code> on your machine.</p>
+                            </div>
+                            <div className="step">
+                                <div className="step-num">2</div>
+                                <h3>Install an Agent</h3>
+                                <p>Run <code>nxagent install agent-name</code>. It handles everything.</p>
+                            </div>
+                            <div className="step">
+                                <div className="step-num">3</div>
+                                <h3>Just Ask</h3>
+                                <p>Talk to OpenClaw naturally. The agent runs behind the scenes.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </FadeContent>
+
+            <FadeContent>
+                <section className="section section-alt">
+                    <div className="container">
+                        <p className="section-label">Available Agents</p>
+                        <h2 className="section-title">Ready to install</h2>
+                        <div className="agents-grid">
+                            {featured.map(a => <AgentCard key={a.id} agent={a} />)}
+                        </div>
+                        {agents.length > 3 && (
+                            <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+                                <Link to="/agents" className="btn btn-secondary">View All Agents →</Link>
+                            </div>
+                        )}
+                    </div>
+                </section>
+            </FadeContent>
+
+            <FadeContent>
+                <section className="section">
+                    <div className="container">
+                        <p className="section-label">Architecture</p>
+                        <h2 className="section-title">You own the keys. We own the logic.</h2>
+                        <p className="section-desc">Your data stays on your machine. Our code stays on our server.</p>
+                        <div className="arch">
+                            <div className="arch-box">
+                                <h4>🖥 Your Machine</h4>
+                                <ul>
+                                    <li>OpenClaw runtime</li>
+                                    <li>Skill files (SKILL.md)</li>
+                                    <li>Your API keys (.env)</li>
+                                    <li>Results displayed locally</li>
+                                </ul>
+                            </div>
+                            <div className="arch-middle">
+                                <div className="arch-arrow"></div>
+                                <div className="arch-arrow-label">HTTPS + key header</div>
+                                <div className="arch-arrow" style={{ transform: 'scaleX(-1)' }}></div>
+                                <div className="arch-arrow-label">SSE response</div>
+                            </div>
+                            <div className="arch-box">
+                                <h4>☁️ Marketplace Server</h4>
+                                <ul>
+                                    <li>Agent logic (private)</li>
+                                    <li>Search & analysis</li>
+                                    <li>Key used in-memory only</li>
+                                    <li>Discarded after response</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </FadeContent>
+
+            <FadeContent>
+                <section className="section section-alt">
+                    <div className="container">
+                        <p className="section-label">Security</p>
+                        <h2 className="section-title">Privacy-first by design</h2>
+                        <div className="security-grid">
+                            <div className="sec-card"><div className="icon">🔑</div><h3>Keys Stay Local</h3><p>API keys live in your <code>.env</code>. Sent only via HTTPS when you use an agent.</p></div>
+                            <div className="sec-card"><div className="icon">🧠</div><h3>In-Memory Only</h3><p>Keys are used to call the LLM, then immediately discarded. Never stored.</p></div>
+                            <div className="sec-card"><div className="icon">🔒</div><h3>Code Protected</h3><p>Agent source code stays on the server. Users only get lightweight instructions.</p></div>
+                            <div className="sec-card"><div className="icon">🚫</div><h3>No Tracking</h3><p>No prompt logging. No user profiles. Each request is stateless.</p></div>
+                        </div>
+                    </div>
+                </section>
+            </FadeContent>
+
+            <FadeContent>
+                <section className="section" style={{ textAlign: 'center' }}>
+                    <div className="container">
+                        <p className="section-label">Get Started</p>
+                        <h2 className="section-title">Ready to try?</h2>
+                        <p className="section-desc" style={{ margin: '0 auto 2rem' }}>Install the CLI and your first agent in under a minute.</p>
+                        <div className="hero-actions">
+                            <Link to="/docs" className="btn btn-primary">Read the Docs →</Link>
+                            <Link to="/agents" className="btn btn-secondary">Browse Agents</Link>
+                        </div>
+                    </div>
+                </section>
+            </FadeContent>
         </div>
-      </section>
-
-      {/* How It Works */}
-      <FadeContent blur duration={600}>
-        <section style={{ padding: '4rem 1.5rem', maxWidth: 1200, margin: '0 auto' }}>
-          <h2 style={{ textAlign: 'center', fontSize: '1.8rem', fontWeight: 700, marginBottom: '0.5rem' }}>
-            How It Works
-          </h2>
-          <p style={{ textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '3rem' }}>
-            Three steps. No accounts. No billing.
-          </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
-            {[
-              { num: '1', title: 'Install the CLI', desc: 'One curl command installs nxagent on your system.' },
-              { num: '2', title: 'Pick an Agent', desc: 'Browse the marketplace and install agents with nxagent install.' },
-              { num: '3', title: 'Run with Your Key', desc: 'Pass your own LLM API key. We never store it.' },
-            ].map(s => (
-              <SpotlightCard key={s.num} spotlightColor="rgba(230,126,34,0.08)">
-                <div style={{ padding: '0.5rem' }}>
-                  <div style={{
-                    width: 28, height: 28, borderRadius: '50%', background: 'var(--accent-muted)',
-                    color: 'var(--accent-hover)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontWeight: 700, fontSize: '0.8rem', marginBottom: '0.75rem'
-                  }}>{s.num}</div>
-                  <h3 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem' }}>{s.title}</h3>
-                  <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>{s.desc}</p>
-                </div>
-              </SpotlightCard>
-            ))}
-          </div>
-        </section>
-      </FadeContent>
-
-      {/* Security */}
-      <FadeContent blur duration={600}>
-        <section style={{ padding: '4rem 1.5rem', maxWidth: 1200, margin: '0 auto' }}>
-          <h2 style={{ textAlign: 'center', fontSize: '1.8rem', fontWeight: 700, marginBottom: '0.5rem' }}>
-            Your Keys. Your Control.
-          </h2>
-          <p style={{ textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '3rem' }}>
-            We never store, log, or see your API keys.
-          </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
-            {[
-              { icon: '🔑', title: 'Pass via Header', desc: 'Keys are sent in X-User-LLM-Key header per-request.' },
-              { icon: '🧠', title: 'In-Memory Only', desc: 'Keys are used to call the LLM, then immediately discarded.' },
-              { icon: '🛡️', title: 'Open Source', desc: 'Inspect every line. No hidden telemetry. MIT licensed.' },
-            ].map(s => (
-              <SpotlightCard key={s.title} spotlightColor="rgba(230,126,34,0.08)">
-                <div style={{ padding: '0.5rem', textAlign: 'center' }}>
-                  <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>{s.icon}</div>
-                  <h3 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem' }}>{s.title}</h3>
-                  <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>{s.desc}</p>
-                </div>
-              </SpotlightCard>
-            ))}
-          </div>
-        </section>
-      </FadeContent>
-
-      {/* Featured Agents */}
-      {agents.length > 0 && (
-        <FadeContent blur duration={600}>
-          <section style={{ padding: '4rem 1.5rem', maxWidth: 1200, margin: '0 auto' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-              <h2 style={{ fontSize: '1.8rem', fontWeight: 700 }}>Featured Agents</h2>
-              <button onClick={() => navigate('/agents')}
-                style={{
-                  background: 'transparent', color: 'var(--accent-hover)', border: 'none',
-                  fontWeight: 500, cursor: 'pointer', fontSize: '0.9rem'
-                }}>View all →</button>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1rem' }}>
-              {agents.map(a => <AgentCard key={a.id} agent={a} />)}
-            </div>
-          </section>
-        </FadeContent>
-      )}
-    </main>
-  );
+    );
 }
