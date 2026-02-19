@@ -27,14 +27,12 @@ export default function AgentDetail() {
 
     if (!agent) {
         return (
-            <>
-                <div className="empty" style={{ paddingTop: '8rem' }}>
-                    <div className="empty-icon">❌</div>
-                    <h3>Agent not found</h3>
-                    <p>"{id}" doesn't exist.</p>
-                    <Link to="/agents" className="btn btn-secondary" style={{ marginTop: '1rem' }}>← Back to Agents</Link>
-                </div>
-            </>
+            <div className="empty" style={{ paddingTop: '8rem' }}>
+                <div className="empty-icon">❌</div>
+                <h3>Agent not found</h3>
+                <p>"{id}" doesn't exist.</p>
+                <Link to="/agents" className="btn btn-secondary" style={{ marginTop: '1rem' }}>← Back to Agents</Link>
+            </div>
         );
     }
 
@@ -52,14 +50,14 @@ export default function AgentDetail() {
                 <div className="container">
                     <div className="agent-hero-inner">
                         <div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
                                 {(agent.tags || []).map(t => (
                                     <span key={t} className="badge badge-accent">{t}</span>
                                 ))}
                                 <span className="badge badge-muted">v{agent.version}</span>
                             </div>
                             <h1>{agentIcon(agent.id)} {agent.name}</h1>
-                            <p className="desc" style={{ fontSize: '1.1rem' }}>{agent.description}</p>
+                            <p className="desc">{agent.description}</p>
                             <p style={{ fontSize: '0.85rem', color: 'var(--text-dim)' }}>by <strong style={{ color: 'var(--text-secondary)' }}>{agent.author}</strong></p>
                         </div>
                         <div className="agent-hero-actions">
@@ -106,14 +104,16 @@ export default function AgentDetail() {
 
                         <h2>Response Format</h2>
                         <p>The API returns <strong>Server-Sent Events (SSE)</strong>:</p>
-                        <table>
-                            <tbody>
-                                <tr><th>Event</th><th>Description</th></tr>
-                                <tr><td><code>status</code></td><td>Progress updates — show to user while waiting</td></tr>
-                                <tr><td><code>result</code></td><td>Final output in markdown — return to user</td></tr>
-                                <tr><td><code>error</code></td><td>Error message if something went wrong</td></tr>
-                            </tbody>
-                        </table>
+                        <div className="table-wrap">
+                            <table>
+                                <tbody>
+                                    <tr><th>Event</th><th>Description</th></tr>
+                                    <tr><td><code>status</code></td><td>Progress updates — show to user while waiting</td></tr>
+                                    <tr><td><code>result</code></td><td>Final output in markdown — return to user</td></tr>
+                                    <tr><td><code>error</code></td><td>Error message if something went wrong</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
 
                         {install?.files?.['SKILL.md'] && (
                             <>

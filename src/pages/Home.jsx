@@ -23,7 +23,7 @@ export default function Home() {
             <section className="hero">
                 <div className="container">
                     <p className="section-label">Open Source Agent Marketplace</p>
-                    <h1>
+                    <div className="hero-heading">
                         <BlurText
                             text="AI Agents for OpenClaw."
                             delay={80}
@@ -31,7 +31,7 @@ export default function Home() {
                             className=""
                         />
                         <GradientText>One command to install.</GradientText>
-                    </h1>
+                    </div>
                     <p><SplitText text="Powerful AI agents running on our servers. You provide your API key. No code downloaded. No secrets shared. Just results." by="words" delay={30} /></p>
                     <div className="hero-actions">
                         <Link to="/agents" className="btn btn-primary">Browse Agents →</Link>
@@ -40,7 +40,7 @@ export default function Home() {
                     <div className="hero-install">
                         <div className="install-cmd" style={{ maxWidth: '560px', margin: '0 auto' }} onClick={() => copy(`curl -sL ${API_BASE}/cli/install | bash`)}>
                             <span>$ curl -sL {API_BASE}/cli/install | bash</span>
-                            <span className="hint" style={{ color: 'var(--text-dim)', fontSize: '0.75rem' }}>Click to copy</span>
+                            <span className="hint">Click to copy</span>
                         </div>
                     </div>
                 </div>
@@ -142,11 +142,11 @@ export default function Home() {
             </FadeContent>
 
             <FadeContent>
-                <section className="section" style={{ textAlign: 'center' }}>
+                <section className="section cta-section">
                     <div className="container">
                         <p className="section-label">Get Started</p>
                         <h2 className="section-title">Ready to try?</h2>
-                        <p className="section-desc" style={{ margin: '0 auto 2rem' }}>Install the CLI and your first agent in under a minute.</p>
+                        <p className="section-desc">Install the CLI and your first agent in under a minute.</p>
                         <div className="hero-actions">
                             <Link to="/docs" className="btn btn-primary">Read the Docs →</Link>
                             <Link to="/agents" className="btn btn-secondary">Browse Agents</Link>

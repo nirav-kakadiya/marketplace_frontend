@@ -29,7 +29,7 @@ export default function App() {
                         <Route path="/docs" element={<Docs />} />
                         <Route path="/docs/:section" element={<Docs />} />
                         <Route path="*" element={
-                            <div className="empty" style={{ paddingTop: '8rem' }}>
+                            <div className="empty" style={{ paddingTop: 'calc(var(--nav-h) + 4rem)' }}>
                                 <div className="empty-icon">404</div>
                                 <h3>Page Not Found</h3>
                                 <p>The page you're looking for doesn't exist.</p>

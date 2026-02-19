@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import CopyBlock from '../components/CopyBlock';
 import FadeContent from '../components/reactbits/FadeContent';
 import { API_BASE } from '../api';
@@ -75,16 +75,18 @@ function DocsCli() {
             {`# Set for the session\nexport NXAGENT_URL="https://your-domain.com"\nnxagent search "research"\n\n# Or prefix a single command\nNXAGENT_URL="https://your-domain.com" nxagent install agent-name`}
         </CopyBlock>
         <h2>Aliases</h2>
-        <table>
-            <tbody>
-                <tr><th>Alias</th><th>Command</th></tr>
-                <tr><td><code>nxagent s</code></td><td>search</td></tr>
-                <tr><td><code>nxagent i</code></td><td>info</td></tr>
-                <tr><td><code>nxagent add</code></td><td>install</td></tr>
-                <tr><td><code>nxagent ls</code></td><td>list</td></tr>
-                <tr><td><code>nxagent rm</code></td><td>uninstall</td></tr>
-            </tbody>
-        </table>
+        <div className="table-wrap">
+            <table>
+                <tbody>
+                    <tr><th>Alias</th><th>Command</th></tr>
+                    <tr><td><code>nxagent s</code></td><td>search</td></tr>
+                    <tr><td><code>nxagent i</code></td><td>info</td></tr>
+                    <tr><td><code>nxagent add</code></td><td>install</td></tr>
+                    <tr><td><code>nxagent ls</code></td><td>list</td></tr>
+                    <tr><td><code>nxagent rm</code></td><td>uninstall</td></tr>
+                </tbody>
+            </table>
+        </div>
     </>;
 }
 
@@ -93,15 +95,17 @@ function DocsSecurity() {
         <h1>Security & Privacy</h1>
         <p>We built this with privacy-first principles.</p>
         <h2>API Key Lifecycle</h2>
-        <table>
-            <tbody>
-                <tr><th>Stage</th><th>Where</th><th>What Happens</th></tr>
-                <tr><td>At Rest</td><td>Your machine</td><td>Stored in <code>~/.openclaw/.env</code></td></tr>
-                <tr><td>In Transit</td><td>Network</td><td>HTTPS encrypted in <code>X-User-LLM-Key</code> header</td></tr>
-                <tr><td>In Use</td><td>Our server</td><td>Used in-memory to call OpenAI</td></tr>
-                <tr><td>After Use</td><td>Our server</td><td>Variable garbage collected. Never stored.</td></tr>
-            </tbody>
-        </table>
+        <div className="table-wrap">
+            <table>
+                <tbody>
+                    <tr><th>Stage</th><th>Where</th><th>What Happens</th></tr>
+                    <tr><td>At Rest</td><td>Your machine</td><td>Stored in <code>~/.openclaw/.env</code></td></tr>
+                    <tr><td>In Transit</td><td>Network</td><td>HTTPS encrypted in <code>X-User-LLM-Key</code> header</td></tr>
+                    <tr><td>In Use</td><td>Our server</td><td>Used in-memory to call OpenAI</td></tr>
+                    <tr><td>After Use</td><td>Our server</td><td>Variable garbage collected. Never stored.</td></tr>
+                </tbody>
+            </table>
+        </div>
         <h2>What We Don't Do</h2>
         <ul>
             <li>❌ Store your API keys</li>
@@ -125,38 +129,44 @@ function DocsApi() {
         <h1>API Reference</h1>
         <p>Base URL: <code>{API_BASE}</code></p>
         <h2>Marketplace Endpoints</h2>
-        <table>
-            <tbody>
-                <tr><th>Method</th><th>Endpoint</th><th>Description</th></tr>
-                <tr><td>GET</td><td><code>/marketplace/agents</code></td><td>List all agents</td></tr>
-                <tr><td>GET</td><td><code>/marketplace/agents?search=q</code></td><td>Search agents</td></tr>
-                <tr><td>GET</td><td><code>/marketplace/agents/:id</code></td><td>Agent details</td></tr>
-                <tr><td>GET</td><td><code>/marketplace/agents/:id/install</code></td><td>Get skill package</td></tr>
-            </tbody>
-        </table>
+        <div className="table-wrap">
+            <table>
+                <tbody>
+                    <tr><th>Method</th><th>Endpoint</th><th>Description</th></tr>
+                    <tr><td>GET</td><td><code>/marketplace/agents</code></td><td>List all agents</td></tr>
+                    <tr><td>GET</td><td><code>/marketplace/agents?search=q</code></td><td>Search agents</td></tr>
+                    <tr><td>GET</td><td><code>/marketplace/agents/:id</code></td><td>Agent details</td></tr>
+                    <tr><td>GET</td><td><code>/marketplace/agents/:id/install</code></td><td>Get skill package</td></tr>
+                </tbody>
+            </table>
+        </div>
         <h2>Execution</h2>
-        <table>
-            <tbody>
-                <tr><th>Method</th><th>Endpoint</th><th>Description</th></tr>
-                <tr><td>POST</td><td><code>/v1/agents/:id/execute</code></td><td>Run an agent</td></tr>
-            </tbody>
-        </table>
+        <div className="table-wrap">
+            <table>
+                <tbody>
+                    <tr><th>Method</th><th>Endpoint</th><th>Description</th></tr>
+                    <tr><td>POST</td><td><code>/v1/agents/:id/execute</code></td><td>Run an agent</td></tr>
+                </tbody>
+            </table>
+        </div>
         <p><strong>Required Header:</strong> <code>X-User-LLM-Key: sk-...</code></p>
         <p><strong>Body:</strong></p>
         <pre><code>{`{ "prompt": "your input", "language": "optional", "options": {} }`}</code></pre>
         <p><strong>Response:</strong> Server-Sent Events (SSE)</p>
         <pre><code>{`event: status\ndata: {"content": "Working..."}\n\nevent: result\ndata: {"content": "## Final Report\\n..."}`}</code></pre>
         <h2>Error Codes</h2>
-        <table>
-            <tbody>
-                <tr><th>Code</th><th>Meaning</th></tr>
-                <tr><td>401</td><td>Invalid or missing API key</td></tr>
-                <tr><td>404</td><td>Agent not found</td></tr>
-                <tr><td>429</td><td>Rate limited</td></tr>
-                <tr><td>501</td><td>Agent has no executor</td></tr>
-                <tr><td>502</td><td>LLM provider error</td></tr>
-            </tbody>
-        </table>
+        <div className="table-wrap">
+            <table>
+                <tbody>
+                    <tr><th>Code</th><th>Meaning</th></tr>
+                    <tr><td>401</td><td>Invalid or missing API key</td></tr>
+                    <tr><td>404</td><td>Agent not found</td></tr>
+                    <tr><td>429</td><td>Rate limited</td></tr>
+                    <tr><td>501</td><td>Agent has no executor</td></tr>
+                    <tr><td>502</td><td>LLM provider error</td></tr>
+                </tbody>
+            </table>
+        </div>
         <h2>Interactive Docs</h2>
         <p>Swagger UI: <a href={`${API_BASE}/docs`} target="_blank" rel="noreferrer">{API_BASE}/docs</a></p>
     </>;
@@ -172,16 +182,18 @@ function DocsSelfHost() {
         <CopyBlock code={`git clone https://github.com/nirav-kakadiya/marketplace_backend.git\ncd marketplace_backend\npip install -r requirements.txt\ncp .env.example .env\nuvicorn app.main:app --host 0.0.0.0 --port 8000`} />
         <h2>Configuration</h2>
         <p>All settings via environment variables (or <code>.env</code> file):</p>
-        <table>
-            <tbody>
-                <tr><th>Variable</th><th>Default</th><th>Description</th></tr>
-                <tr><td><code>PORT</code></td><td>8000</td><td>Server port</td></tr>
-                <tr><td><code>MARKETPLACE_URL</code></td><td>https://agents.nextbase.solutions</td><td>Public URL (injected into CLI)</td></tr>
-                <tr><td><code>CORS_ORIGINS</code></td><td>*</td><td>Allowed origins</td></tr>
-                <tr><td><code>LOG_LEVEL</code></td><td>INFO</td><td>Logging level</td></tr>
-                <tr><td><code>DEFAULT_MODEL</code></td><td>gpt-4o-mini</td><td>Default LLM model</td></tr>
-            </tbody>
-        </table>
+        <div className="table-wrap">
+            <table>
+                <tbody>
+                    <tr><th>Variable</th><th>Default</th><th>Description</th></tr>
+                    <tr><td><code>PORT</code></td><td>8000</td><td>Server port</td></tr>
+                    <tr><td><code>MARKETPLACE_URL</code></td><td>https://agents.nextbase.solutions</td><td>Public URL (injected into CLI)</td></tr>
+                    <tr><td><code>CORS_ORIGINS</code></td><td>*</td><td>Allowed origins</td></tr>
+                    <tr><td><code>LOG_LEVEL</code></td><td>INFO</td><td>Logging level</td></tr>
+                    <tr><td><code>DEFAULT_MODEL</code></td><td>gpt-4o-mini</td><td>Default LLM model</td></tr>
+                </tbody>
+            </table>
+        </div>
         <h2>Deploy To</h2>
         <ul>
             <li><strong>Cloud Run:</strong> <code>gcloud run deploy marketplace --source . --port 8000</code></li>
@@ -198,14 +210,16 @@ function DocsContribute() {
         <h2>Step 1: Copy the template</h2>
         <CopyBlock code="cp -r app/agents/_template app/agents/my-agent" />
         <h2>Step 2: Edit 3 files</h2>
-        <table>
-            <tbody>
-                <tr><th>File</th><th>Purpose</th></tr>
-                <tr><td><code>manifest.json</code></td><td>Metadata — name, description, tags, triggers</td></tr>
-                <tr><td><code>SKILL.md</code></td><td>User-facing instructions (installed on their machine)</td></tr>
-                <tr><td><code>executor.py</code></td><td>Your agent logic (stays on the server)</td></tr>
-            </tbody>
-        </table>
+        <div className="table-wrap">
+            <table>
+                <tbody>
+                    <tr><th>File</th><th>Purpose</th></tr>
+                    <tr><td><code>manifest.json</code></td><td>Metadata — name, description, tags, triggers</td></tr>
+                    <tr><td><code>SKILL.md</code></td><td>User-facing instructions (installed on their machine)</td></tr>
+                    <tr><td><code>executor.py</code></td><td>Your agent logic (stays on the server)</td></tr>
+                </tbody>
+            </table>
+        </div>
         <h2>Executor Signature</h2>
         <pre><code>{`async def execute(prompt: str, api_key: str, language: str = None, options: dict = None):
     yield sse_event("status", "Working...")
@@ -229,6 +243,16 @@ function DocsContribute() {
     </>;
 }
 
+const sectionsList = [
+    { key: '', label: 'Overview', group: 'Getting Started' },
+    { key: 'quickstart', label: 'Quick Start', group: 'Getting Started' },
+    { key: 'cli', label: 'CLI Reference', group: 'Getting Started' },
+    { key: 'security', label: 'Security', group: 'Guides' },
+    { key: 'api', label: 'API Reference', group: 'Guides' },
+    { key: 'self-host', label: 'Self-Hosting', group: 'Guides' },
+    { key: 'contribute', label: 'Contributing', group: 'Community' },
+];
+
 const sections = {
     '': DocsOverview,
     'quickstart': DocsQuickstart,
@@ -241,6 +265,7 @@ const sections = {
 
 export default function Docs() {
     const { section = '' } = useParams();
+    const navigate = useNavigate();
     const Content = sections[section] || DocsOverview;
 
     return (
@@ -264,6 +289,16 @@ export default function Docs() {
                             <h4>Community</h4>
                             <Link to="/docs/contribute" className={section === 'contribute' ? 'active' : ''}>Contributing</Link>
                         </div>
+                    </div>
+                    <div className="docs-mobile-nav">
+                        <select
+                            value={section}
+                            onChange={e => navigate(e.target.value ? `/docs/${e.target.value}` : '/docs')}
+                        >
+                            {sectionsList.map(s => (
+                                <option key={s.key} value={s.key}>{s.group} — {s.label}</option>
+                            ))}
+                        </select>
                     </div>
                     <div className="docs-content">
                         <Content />

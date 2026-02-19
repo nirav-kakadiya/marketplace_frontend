@@ -27,15 +27,15 @@ export default function Agents() {
     });
 
     return (
-        <div className="page-enter" style={{ paddingTop: '5rem' }}>
-            <section className="section" style={{ paddingTop: '2rem' }}>
+        <div className="page-enter">
+            <section className="section" style={{ paddingTop: 'var(--page-top)' }}>
                 <div className="container">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem' }}>
+                    <div className="agents-header">
                         <div>
-                            <h1 style={{ fontSize: '2rem', marginBottom: '0.25rem' }}>Agents</h1>
-                            <p style={{ margin: 0 }}>{agents.length} agents available</p>
+                            <h1>Agents</h1>
+                            <p>{agents.length} agents available</p>
                         </div>
-                        <div className="search-bar" style={{ width: '320px' }}>
+                        <div className="search-bar">
                             <span className="search-icon">🔍</span>
                             <input
                                 type="text"
