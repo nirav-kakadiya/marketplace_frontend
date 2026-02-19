@@ -116,7 +116,11 @@ nav .container{display:flex;align-items:center;justify-content:space-between;wid
 .search-icon{color:var(--text-dim);font-size:0.9rem;flex-shrink:0}
 
 /* ─── Tag Filter ─── */
-.tag-filters{display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag-filters-wrap{margin-top:1rem}
+.tag-filters{display:flex;gap:0.5rem;flex-wrap:wrap;max-height:2.2rem;overflow:hidden;transition:max-height 0.3s ease}
+.tag-filters.expanded{max-height:600px}
+.tag-toggle{background:none;border:none;color:var(--accent);font-size:0.8rem;font-weight:500;cursor:pointer;padding:0.4rem 0;transition:color var(--transition)}
+.tag-toggle:hover{color:var(--accent-hover)}
 .tag-filter{padding:0.35rem 0.875rem;border-radius:99px;font-size:0.8rem;font-weight:500;cursor:pointer;transition:all var(--transition);background:var(--bg-card);color:var(--text-muted);border:1px solid var(--border)}
 .tag-filter:hover{color:var(--text);border-color:var(--border-hover)}
 .tag-filter.active{background:var(--accent-muted);color:var(--accent-hover);border-color:var(--accent)}

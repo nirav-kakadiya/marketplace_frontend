@@ -6,6 +6,7 @@ export default function Agents() {
     const [agents, setAgents] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [activeTag, setActiveTag] = useState('');
+    const [showAllTags, setShowAllTags] = useState(false);
 
     useEffect(() => {
         fetchAgents().then(setAgents);
@@ -47,11 +48,18 @@ export default function Agents() {
                         </div>
                     </div>
                     {tags.length > 0 && (
-                        <div className="tag-filters">
-                            <div className={`tag-filter${!activeTag ? ' active' : ''}`} onClick={() => setActiveTag('')}>All</div>
-                            {tags.map(t => (
-                                <div key={t} className={`tag-filter${activeTag === t ? ' active' : ''}`} onClick={() => setActiveTag(t)}>{t}</div>
-                            ))}
+                        <div className="tag-filters-wrap">
+                            <div className={`tag-filters${showAllTags ? ' expanded' : ''}`}>
+                                <div className={`tag-filter${!activeTag ? ' active' : ''}`} onClick={() => setActiveTag('')}>All</div>
+                                {tags.map(t => (
+                                    <div key={t} className={`tag-filter${activeTag === t ? ' active' : ''}`} onClick={() => setActiveTag(t)}>{t}</div>
+                                ))}
+                            </div>
+                            {tags.length > 10 && (
+                                <button className="tag-toggle" onClick={() => setShowAllTags(v => !v)}>
+                                    {showAllTags ? 'Show less' : `+${tags.length} tags`}
+                                </button>
+                            )}
                         </div>
                     )}
                     {filtered.length > 0 ? (
