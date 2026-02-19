@@ -116,11 +116,13 @@ nav .container{display:flex;align-items:center;justify-content:space-between;wid
 .search-icon{color:var(--text-dim);font-size:0.9rem;flex-shrink:0}
 
 /* ─── Tag Filter ─── */
-.tag-filters-wrap{margin-top:1rem}
-.tag-filters{display:flex;gap:0.5rem;flex-wrap:wrap;max-height:2.2rem;overflow:hidden;transition:max-height 0.3s ease}
-.tag-filters.expanded{max-height:600px}
-.tag-toggle{background:none;border:none;color:var(--accent);font-size:0.8rem;font-weight:500;cursor:pointer;padding:0.4rem 0;transition:color var(--transition)}
-.tag-toggle:hover{color:var(--accent-hover)}
+.tag-categories{display:flex;gap:0.5rem;flex-wrap:wrap;align-items:flex-start;margin-top:1rem}
+.tag-cat{position:relative}
+.tag-cat-btn{padding:0.35rem 0.875rem;border-radius:99px;font-size:0.8rem;font-weight:500;cursor:pointer;transition:all var(--transition);background:var(--bg-card);color:var(--text-muted);border:1px solid var(--border);display:flex;align-items:center;gap:0.4rem}
+.tag-cat-btn:hover{color:var(--text);border-color:var(--border-hover)}
+.tag-cat-btn.has-active{background:var(--accent-muted);color:var(--accent-hover);border-color:var(--accent)}
+.tag-cat-arrow{font-size:0.65rem;opacity:0.6}
+.tag-cat-tags{position:absolute;top:calc(100% + 0.4rem);left:0;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.5rem;display:flex;flex-wrap:wrap;gap:0.35rem;z-index:20;min-width:200px;max-width:320px;box-shadow:0 8px 24px rgba(0,0,0,0.3);animation:fadeIn 0.15s ease}
 .tag-filter{padding:0.35rem 0.875rem;border-radius:99px;font-size:0.8rem;font-weight:500;cursor:pointer;transition:all var(--transition);background:var(--bg-card);color:var(--text-muted);border:1px solid var(--border)}
 .tag-filter:hover{color:var(--text);border-color:var(--border-hover)}
 .tag-filter.active{background:var(--accent-muted);color:var(--accent-hover);border-color:var(--accent)}
@@ -287,8 +289,10 @@ footer p{font-size:0.8rem;color:var(--text-dim);margin-bottom:0.25rem}
     .agent-hero h1{font-size:1.5rem}
     .agents-header{flex-direction:column;align-items:stretch}
     .search-bar{max-width:100%}
-    .tag-filters{justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;padding-bottom:0.25rem}
+    .tag-categories{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;padding-bottom:0.25rem}
+    .tag-cat{flex-shrink:0}
     .tag-filter{flex-shrink:0}
+    .tag-cat-tags{position:fixed;left:1rem;right:1rem;max-width:none;min-width:0}
     .install-cmd{font-size:0.75rem}
     pre{font-size:0.78rem;padding:1rem}
     .section-title{font-size:1.4rem}

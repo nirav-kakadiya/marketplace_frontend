@@ -2,11 +2,34 @@ import { useEffect, useState, useMemo } from 'react';
 import { fetchAgents } from '../api';
 import AgentCard from '../components/AgentCard';
 
+const TAG_CATEGORIES = {
+    'Development': ['code-quality', 'code-review', 'clean-code', 'best-practices', 'SOLID', 'design-patterns', 'refactoring', 'bugs', 'commits', 'git', 'testing', 'unit-tests', 'regex', 'developer-tools'],
+    'AI & LLM': ['ai', 'llm', 'prompts', 'content-extraction', 'summarization', 'translation', 'i18n', 'languages'],
+    'Web & Design': ['web', 'css', 'ui-design', 'colors', 'web-search', 'scraping'],
+    'Data & APIs': ['api', 'openapi', 'database', 'sql', 'queries', 'cron', 'optimization'],
+    'Content & Marketing': ['content', 'copywriting', 'marketing', 'social-media', 'notes', 'documentation'],
+    'Business & Legal': ['business', 'strategy', 'contracts', 'legal', 'security', 'career', 'hiring', 'resume', 'meetings', 'scheduling', 'productivity'],
+    'Utilities': ['utilities', 'analysis', 'research'],
+};
+
+function categoriseTags(allTags) {
+    const assigned = new Set();
+    const groups = [];
+    for (const [cat, members] of Object.entries(TAG_CATEGORIES)) {
+        const matched = members.filter(t => allTags.includes(t));
+        matched.forEach(t => assigned.add(t));
+        if (matched.length) groups.push({ name: cat, tags: matched });
+    }
+    const other = allTags.filter(t => !assigned.has(t) && t !== 'tag1' && t !== 'tag2');
+    if (other.length) groups.push({ name: 'Other', tags: other });
+    return groups;
+}
+
 export default function Agents() {
     const [agents, setAgents] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [activeTag, setActiveTag] = useState('');
-    const [showAllTags, setShowAllTags] = useState(false);
+    const [openCat, setOpenCat] = useState(null);
 
     useEffect(() => {
         fetchAgents().then(setAgents);
@@ -18,6 +41,8 @@ export default function Agents() {
         return [...s].sort();
     }, [agents]);
 
+    const categories = useMemo(() => categoriseTags(tags), [tags]);
+
     const filtered = agents.filter(a => {
         const matchSearch = !searchQuery ||
             a.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -26,6 +51,8 @@ export default function Agents() {
         const matchTag = !activeTag || (a.tags || []).includes(activeTag);
         return matchSearch && matchTag;
     });
+
+    const toggleCat = (name) => setOpenCat(prev => prev === name ? null : name);
 
     return (
         <div className="page-enter">
@@ -47,19 +74,31 @@ export default function Agents() {
                             />
                         </div>
                     </div>
-                    {tags.length > 0 && (
-                        <div className="tag-filters-wrap">
-                            <div className={`tag-filters${showAllTags ? ' expanded' : ''}`}>
-                                <div className={`tag-filter${!activeTag ? ' active' : ''}`} onClick={() => setActiveTag('')}>All</div>
-                                {tags.map(t => (
-                                    <div key={t} className={`tag-filter${activeTag === t ? ' active' : ''}`} onClick={() => setActiveTag(t)}>{t}</div>
-                                ))}
-                            </div>
-                            {tags.length > 10 && (
-                                <button className="tag-toggle" onClick={() => setShowAllTags(v => !v)}>
-                                    {showAllTags ? 'Show less' : `+${tags.length} tags`}
-                                </button>
-                            )}
+                    {categories.length > 0 && (
+                        <div className="tag-categories">
+                            <div className={`tag-filter${!activeTag ? ' active' : ''}`} onClick={() => { setActiveTag(''); setOpenCat(null); }}>All</div>
+                            {categories.map(cat => (
+                                <div key={cat.name} className={`tag-cat${openCat === cat.name ? ' open' : ''}`}>
+                                    <button
+                                        className={`tag-cat-btn${cat.tags.includes(activeTag) ? ' has-active' : ''}`}
+                                        onClick={() => toggleCat(cat.name)}
+                                    >
+                                        {cat.name}
+                                        <span className="tag-cat-arrow">{openCat === cat.name ? '▾' : '▸'}</span>
+                                    </button>
+                                    {openCat === cat.name && (
+                                        <div className="tag-cat-tags">
+                                            {cat.tags.map(t => (
+                                                <div
+                                                    key={t}
+                                                    className={`tag-filter${activeTag === t ? ' active' : ''}`}
+                                                    onClick={() => setActiveTag(activeTag === t ? '' : t)}
+                                                >{t}</div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
                         </div>
                     )}
                     {filtered.length > 0 ? (
