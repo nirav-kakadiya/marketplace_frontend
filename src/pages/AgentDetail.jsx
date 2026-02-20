@@ -119,7 +119,9 @@ export default function AgentDetail() {
                             <>
                                 <h2>Setup Guide</h2>
                                 <p>This agent includes a <code>SKILL.md</code> file that OpenClaw uses to understand when and how to invoke it:</p>
-                                <pre><code>{install.files['SKILL.md']}</code></pre>
+                                <CopyBlock code={install.files['SKILL.md']}>
+                                    {install.files['SKILL.md']}
+                                </CopyBlock>
                             </>
                         )}
 
@@ -144,13 +146,18 @@ export default function AgentDetail() {
                         <div className="sidebar-card">
                             <h4>Required Keys</h4>
                             {(agent.requiredEnv || []).map(k => (
-                                <div key={k} className="env-item"><span className="env-dot"></span><span className="env-name">{k}</span></div>
+                                <div key={k} className="env-item env-item-copy" onClick={() => copy(k)} title="Click to copy">
+                                    <span className="env-dot"></span>
+                                    <span className="env-name">{k}</span>
+                                    <span className="hint">Copy</span>
+                                </div>
                             ))}
                         </div>
                         <div className="sidebar-card">
                             <h4>Install</h4>
                             <div className="install-cmd" onClick={() => copy(`nxagent install ${agent.id}`)} style={{ marginBottom: '0.5rem' }}>
                                 <span style={{ fontSize: '0.8rem' }}>$ nxagent install {agent.id}</span>
+                                <span className="hint">Click to copy</span>
                             </div>
                             <p style={{ fontSize: '0.75rem', color: 'var(--text-dim)', margin: 0 }}>Requires <Link to="/docs/cli">nxagent CLI</Link></p>
                         </div>

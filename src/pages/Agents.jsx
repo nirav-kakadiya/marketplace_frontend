@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef, useCallback } from 'react';
 import { fetchAgents } from '../api';
 import AgentCard from '../components/AgentCard';
 
@@ -30,10 +30,54 @@ export default function Agents() {
     const [searchQuery, setSearchQuery] = useState('');
     const [activeTag, setActiveTag] = useState('');
     const [openCat, setOpenCat] = useState(null);
+    const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const searchRef = useRef(null);
+    const catRef = useRef(null);
+
+    const loadAgents = useCallback(() => {
+        setLoading(true);
+        setError(false);
+        fetchAgents()
+            .then(data => {
+                if (data && data.length >= 0) {
+                    setAgents(data);
+                    setError(false);
+                } else {
+                    setError(true);
+                }
+            })
+            .catch(() => setError(true))
+            .finally(() => setLoading(false));
+    }, []);
 
     useEffect(() => {
-        fetchAgents().then(setAgents);
+        loadAgents();
+    }, [loadAgents]);
+
+    // Fix 10: Ctrl+K / ⌘+K keyboard shortcut to focus search
+    useEffect(() => {
+        const handler = (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                searchRef.current?.focus();
+            }
+        };
+        window.addEventListener('keydown', handler);
+        return () => window.removeEventListener('keydown', handler);
     }, []);
+
+    // Fix 7: Close tag dropdown on outside click
+    useEffect(() => {
+        if (!openCat) return;
+        const handler = (e) => {
+            if (catRef.current && !catRef.current.contains(e.target)) {
+                setOpenCat(null);
+            }
+        };
+        document.addEventListener('mousedown', handler);
+        return () => document.removeEventListener('mousedown', handler);
+    }, [openCat]);
 
     const tags = useMemo(() => {
         const s = new Set();
@@ -66,16 +110,25 @@ export default function Agents() {
                         <div className="search-bar">
                             <span className="search-icon">🔍</span>
                             <input
+                                ref={searchRef}
                                 type="text"
                                 placeholder="Search agents..."
                                 value={searchQuery}
                                 onChange={e => setSearchQuery(e.target.value)}
                                 autoFocus
                             />
+                            {searchQuery && (
+                                <button
+                                    className="search-clear"
+                                    onClick={() => { setSearchQuery(''); searchRef.current?.focus(); }}
+                                    aria-label="Clear search"
+                                >×</button>
+                            )}
+                            <kbd className="search-kbd">⌘K</kbd>
                         </div>
                     </div>
                     {categories.length > 0 && (
-                        <div className="tag-categories">
+                        <div className="tag-categories" ref={catRef}>
                             <div className={`tag-filter${!activeTag ? ' active' : ''}`} onClick={() => { setActiveTag(''); setOpenCat(null); }}>All</div>
                             {categories.map(cat => (
                                 <div key={cat.name} className={`tag-cat${openCat === cat.name ? ' open' : ''}`}>
@@ -101,7 +154,20 @@ export default function Agents() {
                             ))}
                         </div>
                     )}
-                    {filtered.length > 0 ? (
+
+                    {/* Fix 11: Error state with retry */}
+                    {error && !loading ? (
+                        <div className="empty error-state">
+                            <div className="empty-icon">⚠️</div>
+                            <h3>Failed to load agents</h3>
+                            <p>Could not connect to the server. Please check your connection and try again.</p>
+                            <button className="btn btn-primary" onClick={loadAgents} style={{ marginTop: '1rem' }}>
+                                🔄 Retry
+                            </button>
+                        </div>
+                    ) : loading ? (
+                        <div className="loading"><div className="spinner"></div></div>
+                    ) : filtered.length > 0 ? (
                         <div className="agents-grid">
                             {filtered.map(a => <AgentCard key={a.id} agent={a} />)}
                         </div>

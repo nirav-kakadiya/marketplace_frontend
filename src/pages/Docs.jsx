@@ -1,6 +1,7 @@
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import CopyBlock from '../components/CopyBlock';
 import FadeContent from '../components/reactbits/FadeContent';
+import { useToast } from '../components/Toast';
 import { API_BASE } from '../api';
 
 function DocsOverview() {
@@ -26,6 +27,7 @@ function DocsOverview() {
 }
 
 function DocsQuickstart() {
+    const copy = useToast();
     return <>
         <h1>Quick Start</h1>
         <p>Get your first agent running in under 60 seconds.</p>
@@ -53,21 +55,33 @@ function DocsQuickstart() {
         <CopyBlock code="openclaw gateway restart" />
         <h2>Step 4: Use it!</h2>
         <p>Just talk to OpenClaw naturally:</p>
-        <pre><code><span style={{ color: 'var(--blue)' }}>You:</span> Research the latest trends in AI agents{'\n'}<span style={{ color: 'var(--green)' }}>OpenClaw:</span> 🔍 Generating search queries...{'\n'}          Found 12 results. Summarizing...{'\n'}          ## AI Agent Trends 2026 ...</code></pre>
+        <CopyBlock code={`You: Research the latest trends in AI agents\nOpenClaw: 🔍 Generating search queries...\n          Found 12 results. Summarizing...\n          ## AI Agent Trends 2026 ...`}>
+            <span style={{ color: 'var(--blue)' }}>You:</span> Research the latest trends in AI agents{'\n'}<span style={{ color: 'var(--green)' }}>OpenClaw:</span> 🔍 Generating search queries...{'\n'}          Found 12 results. Summarizing...{'\n'}          ## AI Agent Trends 2026 ...
+        </CopyBlock>
     </>;
 }
 
 function DocsCli() {
+    const copy = useToast();
+    const cliCommands = [
+        { cmd: 'nxagent search <query>', desc: 'Search agents by name, description, or tags' },
+        { cmd: 'nxagent info <agent-id>', desc: 'View agent details and required keys' },
+        { cmd: 'nxagent install <agent-id>', desc: 'Install agent into OpenClaw' },
+        { cmd: 'nxagent list', desc: 'List installed marketplace agents' },
+        { cmd: 'nxagent uninstall <agent-id>', desc: 'Remove an installed agent' },
+    ];
     return <>
         <h1>CLI Reference</h1>
         <p>The <code>nxagent</code> CLI is your interface to the marketplace.</p>
         <h2>Commands</h2>
         <div className="cli-grid">
-            <div className="cli-row"><code>nxagent search &lt;query&gt;</code><span>Search agents by name, description, or tags</span></div>
-            <div className="cli-row"><code>nxagent info &lt;agent-id&gt;</code><span>View agent details and required keys</span></div>
-            <div className="cli-row"><code>nxagent install &lt;agent-id&gt;</code><span>Install agent into OpenClaw</span></div>
-            <div className="cli-row"><code>nxagent list</code><span>List installed marketplace agents</span></div>
-            <div className="cli-row"><code>nxagent uninstall &lt;agent-id&gt;</code><span>Remove an installed agent</span></div>
+            {cliCommands.map(({ cmd, desc }) => (
+                <div key={cmd} className="cli-row cli-row-copy" onClick={() => copy(cmd)} title="Click to copy">
+                    <code>{cmd}</code>
+                    <span>{desc}</span>
+                    <span className="cli-copy-hint">Copy</span>
+                </div>
+            ))}
         </div>
         <h2>Custom Marketplace URL</h2>
         <p>If your team hosts their own marketplace:</p>
@@ -125,18 +139,31 @@ function DocsSecurity() {
 }
 
 function DocsApi() {
+    const copy = useToast();
+    const endpoints = [
+        { method: 'GET', path: '/marketplace/agents', desc: 'List all agents' },
+        { method: 'GET', path: '/marketplace/agents?search=q', desc: 'Search agents' },
+        { method: 'GET', path: '/marketplace/agents/:id', desc: 'Agent details' },
+        { method: 'GET', path: '/marketplace/agents/:id/install', desc: 'Get skill package' },
+    ];
+    const execEndpoints = [
+        { method: 'POST', path: '/v1/agents/:id/execute', desc: 'Run an agent' },
+    ];
     return <>
         <h1>API Reference</h1>
-        <p>Base URL: <code>{API_BASE}</code></p>
+        <p>Base URL: <code className="code-copy" onClick={() => copy(API_BASE)} title="Click to copy">{API_BASE}</code></p>
         <h2>Marketplace Endpoints</h2>
         <div className="table-wrap">
             <table>
                 <tbody>
                     <tr><th>Method</th><th>Endpoint</th><th>Description</th></tr>
-                    <tr><td>GET</td><td><code>/marketplace/agents</code></td><td>List all agents</td></tr>
-                    <tr><td>GET</td><td><code>/marketplace/agents?search=q</code></td><td>Search agents</td></tr>
-                    <tr><td>GET</td><td><code>/marketplace/agents/:id</code></td><td>Agent details</td></tr>
-                    <tr><td>GET</td><td><code>/marketplace/agents/:id/install</code></td><td>Get skill package</td></tr>
+                    {endpoints.map(e => (
+                        <tr key={e.path}>
+                            <td>{e.method}</td>
+                            <td><code className="code-copy" onClick={() => copy(e.path)} title="Click to copy">{e.path}</code></td>
+                            <td>{e.desc}</td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </div>
@@ -145,15 +172,21 @@ function DocsApi() {
             <table>
                 <tbody>
                     <tr><th>Method</th><th>Endpoint</th><th>Description</th></tr>
-                    <tr><td>POST</td><td><code>/v1/agents/:id/execute</code></td><td>Run an agent</td></tr>
+                    {execEndpoints.map(e => (
+                        <tr key={e.path}>
+                            <td>{e.method}</td>
+                            <td><code className="code-copy" onClick={() => copy(e.path)} title="Click to copy">{e.path}</code></td>
+                            <td>{e.desc}</td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </div>
-        <p><strong>Required Header:</strong> <code>X-User-LLM-Key: sk-...</code></p>
+        <p><strong>Required Header:</strong> <code className="code-copy" onClick={() => copy('X-User-LLM-Key: sk-...')} title="Click to copy">X-User-LLM-Key: sk-...</code></p>
         <p><strong>Body:</strong></p>
-        <pre><code>{`{ "prompt": "your input", "language": "optional", "options": {} }`}</code></pre>
+        <CopyBlock code={`{ "prompt": "your input", "language": "optional", "options": {} }`} />
         <p><strong>Response:</strong> Server-Sent Events (SSE)</p>
-        <pre><code>{`event: status\ndata: {"content": "Working..."}\n\nevent: result\ndata: {"content": "## Final Report\\n..."}`}</code></pre>
+        <CopyBlock code={`event: status\ndata: {"content": "Working..."}\n\nevent: result\ndata: {"content": "## Final Report\\n..."}`} />
         <h2>Error Codes</h2>
         <div className="table-wrap">
             <table>
@@ -221,10 +254,10 @@ function DocsContribute() {
             </table>
         </div>
         <h2>Executor Signature</h2>
-        <pre><code>{`async def execute(prompt: str, api_key: str, language: str = None, options: dict = None):
+        <CopyBlock code={`async def execute(prompt: str, api_key: str, language: str = None, options: dict = None):
     yield sse_event("status", "Working...")
     result = await call_llm(client, api_key, system="...", user=prompt)
-    yield sse_event("result", result)`}</code></pre>
+    yield sse_event("result", result)`} />
         <h2>Rules</h2>
         <ul>
             <li>✅ Use <code>async def execute()</code> with exact signature</li>
