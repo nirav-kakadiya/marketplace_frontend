@@ -1,4 +1,7 @@
-const API_BASE = window.__MARKETPLACE_API__ || import.meta.env.VITE_BACKEND_URL || 'https://api.nextbase.solutions';
+let API_BASE = window.__MARKETPLACE_API__ || import.meta.env.VITE_BACKEND_URL || 'https://api.nextbase.solutions';
+if (API_BASE.endsWith('/')) {
+    API_BASE = API_BASE.slice(0, -1);
+}
 
 export { API_BASE };
 
