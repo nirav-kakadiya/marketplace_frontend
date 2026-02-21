@@ -1,1 +1,1 @@
-window.__MARKETPLACE_API__ = 'https://marketplacebackend-production-58c8.up.railway.app';
+window.__MARKETPLACE_API__ = 'http://18.222.220.191:8000';
