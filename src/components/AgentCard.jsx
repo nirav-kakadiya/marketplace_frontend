@@ -14,7 +14,7 @@ export default function AgentCard({ agent }) {
     return (
         <SpotlightCard
             className="agent-card"
-            spotlightColor="rgba(230, 126, 34, 0.15)"
+            spotlightColor="rgba(163, 87, 255, 0.15)"
             onClick={() => navigate(`/agents/${agent.id}`)}
         >
             <div className="agent-card-top">
