@@ -1,4 +1,4 @@
-const API_BASE = window.__MARKETPLACE_API__ || 'https://api.nextbase.solutions';
+const API_BASE = window.__MARKETPLACE_API__ || import.meta.env.VITE_BACKEND_URL || 'https://api.nextbase.solutions';
 
 export { API_BASE };
 

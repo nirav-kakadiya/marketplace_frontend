@@ -21,26 +21,69 @@ export default function Home() {
     return (
         <div className="page-enter">
             <section className="hero">
-                <div className="container">
-                    <p className="section-label">Open Source Agent Marketplace</p>
-                    <div className="hero-heading">
-                        <BlurText
-                            text="AI Agents for OpenClaw."
-                            delay={80}
-                            animateBy="words"
-                            className=""
-                        />
-                        <GradientText>One command to install.</GradientText>
+                <div className="hero-glow-bg"></div>
+
+                <div className="hero-container">
+                    <div className="hero-top">
+                        <div className="hero-label-wrapper">
+                            <span className="hero-label-pill">Marketplace</span>
+                            <span className="hero-label-pill">AI Agents for OpenClaw.</span>
+                        </div>
+
+                        <div className="hero-heading">
+                            <h1 className="heading-white">One command to install</h1>
+                            <h1 className="heading-grey">Open Source Agent Marketplace</h1>
+                        </div>
+
+                        <p className="hero-desc">
+                            With RembAI, explore a world of AI tools<br />
+                            built for speed and simplicity.
+                        </p>
+
+                        <div className="hero-btns">
+                            <Link to="/agents" className="btn btn-hero-primary">Browse Agents <span className="arrow">↗</span></Link>
+                            <Link to="/docs" className="btn btn-hero-ghost">Read Docs</Link>
+                        </div>
                     </div>
-                    <p><SplitText text="Powerful AI agents running on our servers. You provide your API key. No code downloaded. No secrets shared. Just results." by="words" delay={30} /></p>
-                    <div className="hero-actions">
-                        <Link to="/agents" className="btn btn-primary">Browse Agents →</Link>
-                        <Link to="/docs" className="btn btn-secondary">Read Docs</Link>
-                    </div>
-                    <div className="hero-install">
-                        <div className="install-cmd" style={{ maxWidth: '560px', margin: '0 auto' }} onClick={() => copy(`curl -sL ${API_BASE}/cli/install | bash`)}>
-                            <span>$ curl -sL {API_BASE}/cli/install | bash</span>
-                            <span className="hint">Click to copy</span>
+
+                    <div className="hero-illustration">
+                        <svg className="hero-connectors" viewBox="0 0 1000 300" preserveAspectRatio="xMidYMid meet">
+                            {/* Left to center */}
+                            <path d="M 150 50 L 220 50 C 240 50 250 60 250 80 L 250 130 C 250 150 260 160 280 160 L 320 160" stroke="url(#grad-pink)" strokeWidth="2" fill="none" />
+                            <path d="M 110 160 L 320 160" stroke="url(#grad-red)" strokeWidth="2" fill="none" />
+                            <path d="M 150 270 L 220 270 C 240 270 250 260 250 240 L 250 190 C 250 170 260 160 280 160 L 320 160" stroke="url(#grad-green)" strokeWidth="2" fill="none" />
+
+                            {/* Right to center */}
+                            <path d="M 850 50 L 780 50 C 760 50 750 60 750 80 L 750 130 C 750 150 740 160 720 160 L 680 160" stroke="url(#grad-cyan)" strokeWidth="2" fill="none" />
+                            <path d="M 890 160 L 680 160" stroke="url(#grad-yellow)" strokeWidth="2" fill="none" />
+                            <path d="M 850 270 L 780 270 C 760 270 750 260 750 240 L 750 190 C 750 170 740 160 720 160 L 680 160" stroke="url(#grad-purple)" strokeWidth="2" fill="none" />
+
+                            <defs>
+                                <linearGradient id="grad-pink" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#ec4899" /><stop offset="100%" stopColor="rgba(236,72,153,0.1)" /></linearGradient>
+                                <linearGradient id="grad-red" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#ef4444" /><stop offset="100%" stopColor="rgba(239,68,68,0.1)" /></linearGradient>
+                                <linearGradient id="grad-green" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#22c55e" /><stop offset="100%" stopColor="rgba(34,197,94,0.1)" /></linearGradient>
+                                <linearGradient id="grad-cyan" x1="1" y1="0" x2="0" y2="0"><stop offset="0%" stopColor="#06b6d4" /><stop offset="100%" stopColor="rgba(6,182,212,0.1)" /></linearGradient>
+                                <linearGradient id="grad-yellow" x1="1" y1="0" x2="0" y2="0"><stop offset="0%" stopColor="#eab308" /><stop offset="100%" stopColor="rgba(234,179,8,0.1)" /></linearGradient>
+                                <linearGradient id="grad-purple" x1="1" y1="0" x2="0" y2="0"><stop offset="0%" stopColor="#8b5cf6" /><stop offset="100%" stopColor="rgba(139,92,246,0.1)" /></linearGradient>
+                            </defs>
+                        </svg>
+
+                        <div className="hero-node node-tl node-pink">🕸️</div>
+                        <div className="hero-node node-ml node-red">🚨</div>
+                        <div className="hero-node node-bl node-green">📗</div>
+
+                        <div className="hero-node node-tr node-cyan">📅</div>
+                        <div className="hero-node node-mr node-yellow">🔍</div>
+                        <div className="hero-node node-br node-purple">✨</div>
+
+                        <div className="hero-install-box">
+                            <div className="install-box-header">
+                                <span className="install-title">Installation Command</span>
+                                <span className="install-copy" onClick={() => copy(`curl -sL ${API_BASE}/cli/install | bash`)}>Click To Copy ❐</span>
+                            </div>
+                            <div className="install-box-body">
+                                <span className="cmd-prompt">$</span> curl -sL <span className="cmd-url">{API_BASE}</span>/cli/install | bash
+                            </div>
                         </div>
                     </div>
                 </div>

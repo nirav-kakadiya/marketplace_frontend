@@ -637,6 +637,7 @@ nav .container {
     margin-bottom: 1rem;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden
 }
@@ -721,32 +722,350 @@ nav .container {
     flex-shrink: 0
 }
 
-.install-cmd {
-    background: var(--bg-code);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 0.75rem 1rem;
-    font-family: var(--mono);
-    font-size: 0.85rem;
-    color: var(--green);
+/* ─── Hero Section (Screenshot-accurate) ─── */
+.hero {
+    padding: 120px 0 80px;
+    position: relative;
+    overflow: hidden;
+    min-height: 859px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background: #0B0B0E
+        /* Dark purple-black background */
+}
+
+/* Subtle purple glow */
+.hero-glow-bg {
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1000px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, transparent 65%);
+    z-index: 0;
+    pointer-events: none
+}
+
+.hero-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    max-width: 1000px;
+    width: 100%;
+    padding: 0 24px;
+    position: relative;
+    z-index: 2
+}
+
+.hero-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+    width: 100%
+}
+
+.hero-label-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 8px
+}
+
+.hero-label-pill {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #d1d5db;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.1)
+}
+
+/* Hero heading block */
+.hero-heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+}
+
+.heading-white {
+    font-size: clamp(2.4rem, 4vw, 3.2rem);
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0
+}
+
+.heading-grey {
+    font-size: clamp(2.4rem, 4vw, 3.2rem);
+    font-weight: 500;
+    color: #9ca3af;
+    margin: 0
+}
+
+.hero-desc {
+    font-size: 1.05rem;
+    color: #9ca3af;
+    max-width: 560px;
+    line-height: 1.6;
+    text-align: center;
+    margin: 0
+}
+
+/* Button row */
+.hero-btns {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 8px;
+    flex-wrap: wrap
+}
+
+/* Primary CTA button (Browse Agents) */
+.btn-hero-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.4rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    font-family: var(--font);
+    background: #ffffff;
+    color: #000000;
+    border: none;
     cursor: pointer;
     transition: all var(--transition);
+    text-decoration: none;
+}
+
+.btn-hero-primary:hover {
+    background: rgba(255, 255, 255, 0.85);
+}
+
+.btn-hero-primary .arrow {
+    font-size: 1.1rem;
+    line-height: 1
+}
+
+/* Secondary CTA (Read Docs) */
+.btn-hero-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.4rem;
+    border-radius: 999px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    font-family: var(--font);
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: all var(--transition);
+    text-decoration: none
+}
+
+.btn-hero-ghost:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* ─── Hero Illustration ─── */
+.hero-illustration {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    height: 320px;
+    margin-top: 24px
+}
+
+/* SVG connector lines */
+.hero-connectors {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1
+}
+
+/* Icon nodes */
+.hero-node {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    background: #111116;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    z-index: 3;
+    transition: transform 0.3s ease;
+    transform: translate(-50%, -50%)
+}
+
+.hero-node:hover {
+    transform: translate(-50%, -50%) scale(1.1) !important;
+}
+
+/* Node positions and borders matching their lines */
+.node-pink {
+    border-color: rgba(236, 72, 153, 0.3);
+}
+
+.node-red {
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.node-green {
+    border-color: rgba(34, 197, 94, 0.3);
+}
+
+.node-cyan {
+    border-color: rgba(6, 182, 212, 0.3);
+}
+
+.node-yellow {
+    border-color: rgba(234, 179, 8, 0.3);
+}
+
+.node-purple {
+    border-color: rgba(139, 92, 246, 0.3);
+}
+
+/* Left cluster positions */
+.node-tl {
+    top: 50px;
+    left: 150px;
+    animation: heroFloat 6s ease-in-out infinite alternate
+}
+
+.node-ml {
+    top: 160px;
+    left: 110px;
+    animation: heroFloat 8s ease-in-out infinite alternate-reverse
+}
+
+.node-bl {
+    top: 270px;
+    left: 150px;
+    animation: heroFloat 7s ease-in-out infinite alternate
+}
+
+/* Right cluster positions */
+.node-tr {
+    top: 50px;
+    left: 850px;
+    animation: heroFloat 5s ease-in-out infinite alternate-reverse
+}
+
+.node-mr {
+    top: 160px;
+    left: 890px;
+    animation: heroFloat 9s ease-in-out infinite alternate
+}
+
+.node-br {
+    top: 270px;
+    left: 850px;
+    animation: heroFloat 6.5s ease-in-out infinite alternate-reverse
+}
+
+/* Install Box */
+.hero-install-box {
+    position: absolute;
+    top: 160px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 460px;
+    background: #18181E;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden
+}
+
+.install-box-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 0.5rem;
-    word-break: break-all
+    padding: 8px 16px;
+    background: #202028;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.install-cmd:hover {
-    border-color: var(--accent)
-}
-
-.install-cmd .hint {
-    color: var(--text-dim);
-    font-family: var(--font);
+.install-title {
     font-size: 0.7rem;
-    flex-shrink: 0
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 500
+}
+
+.install-copy {
+    font-size: 0.7rem;
+    color: #9ca3af;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.install-copy:hover {
+    color: #fff
+}
+
+.install-box-body {
+    padding: 16px;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: #d1d5db;
+    overflow-x: auto;
+    white-space: nowrap
+}
+
+.install-box-body .cmd-prompt {
+    color: #eab308;
+    margin-right: 8px;
+}
+
+.install-box-body .cmd-url {
+    color: #4ade80;
+}
+
+@keyframes heroFloat {
+    0% {
+        margin-top: 0;
+    }
+
+    100% {
+        margin-top: -12px;
+    }
+}
+
+
+/* ─── Table responsive wrapper ─── */
+.table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1rem 0 1.5rem
+}
+
+.table-wrap table {
+    margin: 0
 }
 
 .agent-content {
@@ -1495,14 +1814,28 @@ footer p {
         font-size: 0.9rem
     }
 
-    .hero-actions {
+    .hero-btns {
         flex-direction: column;
-        align-items: center
+        align-items: center;
+        width: 100%
     }
 
-    .hero-actions .btn {
+    .btn-hero-ghost,
+    .btn-hero-primary {
         width: 100%;
         justify-content: center
+    }
+
+    .hero-illustration {
+        height: 200px
+    }
+
+    .hero-install-bar {
+        width: 95%
+    }
+
+    .install-bar-cmd {
+        font-size: 0.75rem
     }
 
     .agent-card {
